@@ -1,0 +1,103 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct Node
+{
+    int data;
+    struct Node* pnext;
+} node, *pnode;
+
+typedef struct Queen
+{
+    pnode front;
+    pnode rear;
+}queen,*pqueen;
+
+void init(pqueen n)
+{
+    n->front = (pnode)malloc(sizeof(node));
+    n->rear = (pnode)malloc(sizeof(node)); 
+    if (n->front == NULL)
+    {
+        printf ("Failed");
+    }
+    else
+    {
+        n->front = n->rear;
+        n->rear->pnext = NULL;
+    }
+}
+
+void push(pqueen n,int data)
+{
+   
+    pnode m= (pnode)malloc(sizeof(node));
+    if (n->front == n->rear)
+    {
+       m->data = data;
+       m->pnext = NULL;
+       n->front->pnext = m;
+       n->rear = m;
+    }
+    else 
+    {
+    m->data = data;
+    n->rear->pnext = m;
+    m->pnext = NULL;
+    n->rear = m;
+    }
+}
+int Empty(pqueen n)
+{
+    if (n->rear == n->front)
+        return 1;
+    else
+        return 0;
+}
+void pop(pqueen n)
+{
+    int d;
+    pnode m = NULL;
+     if (Empty(n))
+     {
+        exit(-1);
+     }
+      else
+     {
+         pnode m = n->front->pnext;
+         d = m->data;
+        printf ("%d\n",d);
+        n->front->pnext = m->pnext;
+        free(m);
+     }
+}
+
+void bianli(pqueen n)
+{
+    pnode m = n->front->pnext;
+    while (m!= n->rear->pnext)
+    {
+        printf("%d ",m->data);
+        m = m->pnext;
+    }
+    printf("\n");
+}
+int main(void)
+{
+    int a,b,c;
+    queen q;
+    init(&q);
+    printf("请问您需要多长的队列");
+    scanf ("%d",&a);
+    for (b=0;b<a;b++)
+    {
+        printf ("输入数据：");
+        scanf("%d",&c);
+        push(&q,c);
+    }
+    bianli(&q);
+    pop (&q);
+    bianli(&q);
+    return 0;
+}
